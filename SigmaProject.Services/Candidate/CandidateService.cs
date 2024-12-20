@@ -13,8 +13,6 @@ public class CandidateService : ICandidateService
     private readonly DataContext _context;
     private readonly ILogger<CandidateService> _logger;
     private readonly IMemoryCache _cache;
-    private ILogger<CandidateService> object1;
-    private IMemoryCache object2;
     private const string candidateEntity = "Candidate";
     public CandidateService(DataContext context, ILogger<CandidateService> logger, IMemoryCache cache)
     {
@@ -32,7 +30,13 @@ public class CandidateService : ICandidateService
 
             if (!validationResult.IsValid)
             {
-                return Result<ReturnMessageModel>.ValidationError(validationResult.Errors.Select(x => x.ErrorMessage));
+                var validationErrors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+                var returnMessageModel = new ReturnMessageModel()
+                {
+                    ReturnMessage = "One or more validation error",
+                    ValidationErrors = validationErrors
+                };
+                return Result<ReturnMessageModel>.ValidationError(validationErrors, returnMessageModel);
             }
 
             var existingCandidate = await _context.Candidate
@@ -70,7 +74,6 @@ public class CandidateService : ICandidateService
                     LinkedInProfileUrl = request.LinkedInProfileUrl ?? existingCandidate.LinkedInProfileUrl,
                     Comment = request.Comment,
                 };
-
 
                 existingCandidate.FirstName = request.FirstName;
                 existingCandidate.LastName = request.LastName;

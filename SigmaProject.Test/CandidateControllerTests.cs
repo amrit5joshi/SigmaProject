@@ -23,7 +23,7 @@ namespace SigmaProject.Test.ApiLayer
         {
             var candidates = new List<CandidateModel>
             {
-                 new CandidateModel { Id = 1, FirstName = "Amrit", LastName = "Joshi", Email = "amrit.joshi@example.com" },
+                new CandidateModel { Id = 1, FirstName = "Amrit", LastName = "Joshi", Email = "amrit.joshi@example.com" },
                 new CandidateModel { Id = 2, FirstName = "Ben", LastName = "Smith", Email = "ben.smith@example.com" },
                 new CandidateModel { Id = 3, FirstName = "Hari", LastName = "Kumar", Email = "hari.kumar@example.com" },
                 new CandidateModel { Id = 4, FirstName = "Ram", LastName = "Chandra", Email = "ram.chandra@example.com" },
@@ -35,10 +35,13 @@ namespace SigmaProject.Test.ApiLayer
             _mockCandidateService.Setup(service => service.GetAllCandidates(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
-            var result = await _controller.GetAllCandidates(CancellationToken.None);
-
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(expectedResult.Value, okResult.Value);
+            var response = await _controller.GetAllCandidates(CancellationToken.None);
+            var okResult = Assert.IsType<OkObjectResult>(response);
+            var result = Assert.IsType<Result<List<CandidateModel>>>(okResult.Value);
+            Assert.True(result.IsSuccess);
+            Assert.Equal(expectedResult.Value, result.Value);
+            Assert.Equal(expectedResult.ValidationErrors, result.ValidationErrors);
+            Assert.Equal(expectedResult.ErrorMessage, result.ErrorMessage);
         }
 
         [Fact]
@@ -62,33 +65,44 @@ namespace SigmaProject.Test.ApiLayer
             _mockCandidateService.Setup(service => service.CreateOrUpdateCandidate(candidateRequest, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
-            var result = await _controller.CreateOrUpdateCandidate(candidateRequest, CancellationToken.None);
+            var response = await _controller.CreateOrUpdateCandidate(candidateRequest, CancellationToken.None);
+            var okResult = Assert.IsType<OkObjectResult>(response);
+            var result = Assert.IsType<Result<ReturnMessageModel>>(okResult.Value);
+            Assert.True(result.IsSuccess);
+            Assert.Equal(expectedResult.Value, result.Value);
+            Assert.Equal(expectedResult.ValidationErrors, result.ValidationErrors);
+            Assert.Equal(expectedResult.ErrorMessage, result.ErrorMessage);
 
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(expectedResult.Value.ReturnMessage, ((ReturnMessageModel)okResult.Value).ReturnMessage);
+
         }
-
 
         [Fact]
         public async Task CreateOrUpdateCandidate_ReturnsBadRequest_WhenValidationFails()
         {
             var candidateRequest = new CreateOrUpdateCandidateModel
             {
-                FirstName = "", 
+                FirstName = "",
                 LastName = "JOSHI",
                 Email = "JOSHI@gmail.com",
                 Comment = "random comment"
             };
-
-            var expectedResult = Result<ReturnMessageModel>.ValidationError(new List<string> { "First name is required." });
+            var validationError = new List<string> { "First name is required." };
+            var expectedResult = Result<ReturnMessageModel>.ValidationError(validationError, new ReturnMessageModel() { 
+                ReturnMessage = "One or more validation error.",
+                ValidationErrors = validationError
+            });
 
             _mockCandidateService.Setup(service => service.CreateOrUpdateCandidate(candidateRequest, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
-            var result = await _controller.CreateOrUpdateCandidate(candidateRequest, CancellationToken.None);
+            var response = await _controller.CreateOrUpdateCandidate(candidateRequest, CancellationToken.None);
 
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal(expectedResult.ValidationErrors, badRequestResult.Value);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(response);
+            var result = Assert.IsType<Result<ReturnMessageModel>>(badRequestResult.Value);
+            Assert.False(result.IsSuccess);
+            Assert.Equal(expectedResult.Value, result.Value);
+            Assert.Equal(expectedResult.ValidationErrors, result.ValidationErrors);
+            Assert.Equal(expectedResult.ErrorMessage, result.ErrorMessage);
         }
 
         [Fact]
@@ -99,10 +113,14 @@ namespace SigmaProject.Test.ApiLayer
             _mockCandidateService.Setup(service => service.GetAllCandidates(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
-            var result = await _controller.GetAllCandidates(CancellationToken.None);
+            var response = await _controller.GetAllCandidates(CancellationToken.None);
 
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Empty(((List<CandidateModel>)okResult.Value));
+            var okResult = Assert.IsType<OkObjectResult>(response);
+            var result = Assert.IsType<Result<List<CandidateModel>>>(okResult.Value);
+            Assert.True(result.IsSuccess);
+            Assert.Equal(expectedResult.Value, result.Value);
+            Assert.Equal(expectedResult.ValidationErrors, result.ValidationErrors);
+            Assert.Equal(expectedResult.ErrorMessage, result.ErrorMessage);
         }
 
         [Fact]
@@ -116,15 +134,19 @@ namespace SigmaProject.Test.ApiLayer
                 Comment = "random comment"
             };
 
-            var expectedResult = Result<ReturnMessageModel>.ValidationError(new List<string> { "First name is required.", "Email is not valid." });
+            var expectedResult = Result<ReturnMessageModel>.ValidationError(new List<string> { "First name is required.", "Email is not valid." }, new ReturnMessageModel());
 
             _mockCandidateService.Setup(service => service.CreateOrUpdateCandidate(candidateRequest, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
-            var result = await _controller.CreateOrUpdateCandidate(candidateRequest, CancellationToken.None);
+            var response = await _controller.CreateOrUpdateCandidate(candidateRequest, CancellationToken.None);
 
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal(expectedResult.ValidationErrors, badRequestResult.Value);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(response);
+            var result = Assert.IsType<Result<ReturnMessageModel>>(badRequestResult.Value);
+            Assert.False(result.IsSuccess);
+            Assert.Equal(expectedResult.Value, result.Value);
+            Assert.Equal(expectedResult.ValidationErrors, result.ValidationErrors);
+            Assert.Equal(expectedResult.ErrorMessage, result.ErrorMessage);
         }
     }
 }

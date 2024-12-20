@@ -15,7 +15,7 @@ namespace SigmaProject.API.Controllers
             }
             if (result.IsSuccess && result.Value != null)
             {
-                return Ok(result.Value);
+                return Ok(result);
             }
 
             if (result.IsSuccess && result.Value == null)
@@ -25,9 +25,9 @@ namespace SigmaProject.API.Controllers
 
             if (!result.IsSuccess && result.ValidationErrors != null)
             {
-                return BadRequest(result.ValidationErrors);
+                return BadRequest(result);
             }
-            return BadRequest(result.ErrorMessage);
+            return BadRequest(result);
         }
     }
 }
