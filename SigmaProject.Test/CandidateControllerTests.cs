@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using SigmaProject.API.Controllers;
+using SigmaProject.API.Controllers.Candidate.v1;
 using SigmaProject.Models.Candidate;
 using SigmaProject.Models.Common;
 using SigmaProject.Services.Candidate;
