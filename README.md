@@ -3,6 +3,16 @@
 ## Overview
 The Sigma Candidate Application 
 
+### System Overview
+- **Relational Database**: Utilized SQLserver for Data Storage.
+- **Caching**: In Memory Caching
+- **Entity Framework Core**: ORM for data access and management.
+- **API Versioning**: Supports multiple versions of the API for backward compatibility.
+- **Serilog**: Facilitates structured logging for better monitoring and diagnostics.
+- **Swagger**: Automatically generates API documentation for easy exploration and testing.
+- **FluentValidation**: Implements robust validation rules for models.
+- **Coverlet**: Provides code coverage metrics for unit tests.
+- **xUnit and Moq**: Used for testing and mocking dependencies with In Memory Database.
 
 # Time spent:
 
@@ -20,7 +30,7 @@ The Sigma Candidate Application
 - Shift to a microservices architecture to enhance scalability and maintainability.
 
 ### 2. MediatR Integration
-- Consider using the Mediator pattern with MediatR for improved separation of concerns and better handling of commands and queries.
+- Using the Mediator pattern with MediatR for improved separation of concerns and better handling of commands and queries.
 
 ### 3. Enhanced Security
 - Use OAuth 2.0 for secure access to the API, ensuring only authorized users can manage candidate information.
@@ -32,7 +42,7 @@ The Sigma Candidate Application
 - Integrate full-text search tools (e.g., Elasticsearch) to enhance candidate search speed and relevance.
 
 ### 6. User-Friendly Interface
-- Although focusing on APIs, consider creating a simple UI prototype to help HR visualize and manage candidate data.
+- Creating a simple UI prototype to help HR visualize and manage candidate data.
 
 ### 7. Docker
 - Dockerize the application for efficient deployment and managing the application in the production.
@@ -66,7 +76,7 @@ The Sigma Candidate Application
 
 ### Prerequisites
 - SQL Server
-- Visual Studio
+- Visual Studio 
 
 ### Installation
 
@@ -75,7 +85,7 @@ The Sigma Candidate Application
    ```bash
    git clone https://github.com/amrit5joshi/SigmaProject.git
  
- ###Database Migrations
+ ### Database Migrations
 
 #### To add a new migration to the project, use the following command. Make sure to replace YourMigrationName with a descriptive name for your migration:
 
@@ -88,3 +98,6 @@ The Sigma Candidate Application
        coverlet SigmaProject.Test/bin/Debug/net8.0/SigmaProject.Test.dll --target "dotnet" --targetargs "test --no-build" --format cobertura
 
 ![image](https://github.com/user-attachments/assets/8b08748d-9967-4efd-a53f-3c1f9303971a)
+
+
+
