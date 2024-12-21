@@ -1,9 +1,9 @@
 ﻿using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using SigmaProject.API.Options;
 using SigmaProject.Data;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace SigmaProject.API.Extensions
 {
@@ -29,7 +29,6 @@ namespace SigmaProject.API.Extensions
                 });
             });
 
-
             services.ConfigureOptions<DatabaseOptionSetup>();
 
             services.AddDbContext<DataContext>((serviceProvider, options) =>
@@ -47,7 +46,7 @@ namespace SigmaProject.API.Extensions
 
             services.AddApiVersioning(options =>
             {
-                options.DefaultApiVersion = new ApiVersion(1);
+                options.DefaultApiVersion = new ApiVersion(1,0);
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ReportApiVersions = true;
             });
@@ -58,12 +57,9 @@ namespace SigmaProject.API.Extensions
                 options.SubstituteApiVersionInUrl = true;
             });
 
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigOptions>();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Sigma Candidate API", Version = "v1" });
-                options.EnableAnnotations();
-            });
+            services.AddSwaggerGen();
 
             return services;
         }

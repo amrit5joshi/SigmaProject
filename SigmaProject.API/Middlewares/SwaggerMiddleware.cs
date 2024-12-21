@@ -1,8 +1,11 @@
-﻿namespace SigmaProject.API.Middleware;
+﻿using Asp.Versioning.ApiExplorer;
+
+namespace SigmaProject.API.Middleware;
 public static class SwaggerMiddleware
 {
-    public static IApplicationBuilder UseApplicationSwagger(this IApplicationBuilder app, IConfiguration configuration, IHostEnvironment env)
+    public static IApplicationBuilder UseApplicationSwagger(this IApplicationBuilder app, IConfiguration configuration, IApiVersionDescriptionProvider versionDescriptionProvider)
     {
+        
         app.UseSwagger(options =>
         {
             options.RouteTemplate = "swagger/{documentName}/swagger.json";
@@ -11,7 +14,11 @@ public static class SwaggerMiddleware
 
         app.UseSwaggerUI(c =>
         {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sigma Candidate Project API");
+            foreach(var desc in versionDescriptionProvider.ApiVersionDescriptions)
+            {
+                c.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json", 
+                    $"Sigma Candidate API - {desc.GroupName.ToUpper()}");
+            }
         });
 
         return app;

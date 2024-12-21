@@ -5,9 +5,9 @@ using SigmaProject.Models.Common;
 using SigmaProject.Services.Candidate;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace SigmaProject.API.Controllers
+namespace SigmaProject.API.Controllers.Candidate.v1
 {
-    [ApiVersion("1")]
+    [ApiVersion("1.0")]
     public class CandidateController : BaseApiController
     {
         private readonly ICandidateService _candidateService;
