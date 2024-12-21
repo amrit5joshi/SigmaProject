@@ -3,7 +3,7 @@
     public class ReturnMessageModel
     {
         public string ReturnMessage { get; set; }
-        public IEnumerable<string> ValidationErrors { get; set; }
+        public List<string> ValidationErrors { get; set; }
         public static string SaveSuccess(string entity)
         {
             return $"{entity} Saved Successfully";
