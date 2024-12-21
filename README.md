@@ -71,6 +71,7 @@ The Sigma Candidate Application
 ### Installation
 
 1. Clone the repository:
+   
    ```bash
    git clone https://github.com/amrit5joshi/SigmaProject.git
  
@@ -78,5 +79,12 @@ The Sigma Candidate Application
 
 #### To add a new migration to the project, use the following command. Make sure to replace YourMigrationName with a descriptive name for your migration:
 
-    ```bash
+    
        dotnet ef migrations add Initial --context DataContext -o ..\SigmaProject.Data\Migrations\Core -p .\SigmaProject.Data -s .\SigmaProject.API
+
+### For test coverage, I have used coverlet
+
+    
+       coverlet SigmaProject.Test/bin/Debug/net8.0/SigmaProject.Test.dll --target "dotnet" --targetargs "test --no-build" --format cobertura
+
+![image](https://github.com/user-attachments/assets/8b08748d-9967-4efd-a53f-3c1f9303971a)
