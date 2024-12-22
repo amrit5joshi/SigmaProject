@@ -19,7 +19,7 @@ namespace SigmaProject.API.Options
             {
                 options.SwaggerDoc(desc.GroupName, new OpenApiInfo()
                 {
-                    Title = "Barnit API",
+                    Title = "Sigma Project API",
                     Version = desc.ApiVersion.ToString()
                 });
             }
