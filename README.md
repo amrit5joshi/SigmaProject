@@ -41,13 +41,10 @@ The Sigma Candidate Application
 ### 5. Advanced Search Capabilities
 - Integrate full-text search tools (e.g., Elasticsearch) to enhance candidate search speed and relevance.
 
-### 6. User-Friendly Interface
-- Creating a simple UI prototype to help HR visualize and manage candidate data.
-
-### 7. Docker
+### 6. Docker
 - Dockerize the application for efficient deployment and managing the application in the production.
 
-### 8. CI/CD Pipeline
+### 7. CI/CD Pipeline
 - Establish a CI/CD setup for automated testing and deployment, streamlining the integration of new changes.
 
 
