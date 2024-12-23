@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using SigmaProject.Data;
@@ -62,19 +62,6 @@ public class CandidateService : ICandidateService
             }
             else
             {
-                var newCandidate = new SigmaProject.Data.Entities.Candidate.Candidate
-                {
-                    Id = existingCandidate.Id,
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    PhoneNumber = request.PhoneNumber ?? existingCandidate.PhoneNumber,
-                    Email = request.Email,
-                    CallTimeInterval = request.CallTimeInterval ?? existingCandidate.CallTimeInterval,
-                    GitHubProfileUrl = request.GitHubProfileUrl ?? existingCandidate.GitHubProfileUrl,
-                    LinkedInProfileUrl = request.LinkedInProfileUrl ?? existingCandidate.LinkedInProfileUrl,
-                    Comment = request.Comment,
-                };
-
                 existingCandidate.FirstName = request.FirstName;
                 existingCandidate.LastName = request.LastName;
                 existingCandidate.PhoneNumber = request.PhoneNumber;
